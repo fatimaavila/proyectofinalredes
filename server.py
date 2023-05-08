@@ -21,6 +21,8 @@ print("Esperando conexiones, el servidor ha sido iniciado")
 
 
 def client_checkup(conn):
+
+    conn.send(str.encode("conectado"))
     
     respuesta = ""
     while True:
@@ -48,5 +50,5 @@ while True:
     conn, addr = server_socket.accept()
     print("conectado a: ", addr)
 
-    start_new_thread(client_checkup, (conn,))
+    client_checkup(conn)
 
