@@ -23,26 +23,25 @@ print("Esperando conexiones, el servidor ha sido iniciado")
 def client_checkup(conn):
 
     conn.send(str.encode("conectado"))
-    
+
     respuesta = ""
     while True:
-        try:
-            #2048 son los bits
-            data = conn.recv(2048)
-            #ascii o utf-8 para codificar
-            respuesta = data.decode("ascii")
+    
+        #2048 son los bits
+        data = conn.recv(2048)
+        #ascii o utf-8 para codificar
+        respuesta = data.decode("ascii")
 
-            if not data:
-                print("Desconectado")
-                break
-            
-            else:
-                print("Recieved: ", respuesta)
-                print("enviando: ", respuesta)
-            
-            conn.sendall(str.encode(respuesta))
-        except:
+        if not data:
+            print("Desconectado")
             break
+        
+        else:
+            print("Recieved: ", respuesta)
+            print("enviando: ", respuesta)
+        
+        conn.sendall(str.encode(respuesta))
+        
     print("conexión perdida")
     conn.close
 
