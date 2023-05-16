@@ -3,6 +3,7 @@ from _thread import *
 import sys
 import pickle
 from game import ConnectFour
+import time
 
 #en el server se pone nuestro IPv4 (por lo menos por ahora que es local)
 server = "192.168.5.32"
@@ -17,8 +18,9 @@ except socket.error as e:
     print(str(e))
 
 conexiones = 0
-games = []
-counters = []
+games = {}
+ready = {}
+
 
 #cantidad de conexiones que vamos a tener
 server_socket.listen(100)
@@ -26,28 +28,37 @@ print("Esperando conexiones, el servidor ha sido iniciado")
 
 
 def threaded_client(conn, p , gameId):
-    print("Confimarmos threading")
     global idCount
     conn.send(str(p).encode("ascii"))
     if p == 0:
         
         connect_four = ConnectFour()
-        games.append(connect_four)
-        counters.append(0)
+        games[gameId] = connect_four
+        ready[gameId] = False
+        
+    else:
+        connect_four = games[gameId]
         connect_four.game.print_board()
-      
+        ready[gameId] = True
+
+
+    while ready[gameId] == False:
+        print("Esperando rival...")
+        time.sleep(1.5)
+        
+
     reply = ""
     connect_four = games[gameId]
     board_data = pickle.dumps(connect_four.game)  
     conn.send(board_data)
    
     while True:
-        counter = counters[gameId]
-        connect_four = games[gameId]
-        
+       
 
-                   
+        connect_four = games[gameId]                 
         data = conn.recv(2048).decode("ascii")   
+        if gameId not in games:
+            break
         if data != "n":
           
         
@@ -63,6 +74,8 @@ def threaded_client(conn, p , gameId):
                 connect_four.game.print_board()
                 print(f"¡Jugador {connect_four.player} gana! 🎉")
                 connect_four.game.winner = connect_four.player
+                board_data = pickle.dumps(connect_four.game)
+                conn.send(board_data)
                 break
             if connect_four.board_full():
                 connect_four.game.print_board()
@@ -76,9 +89,16 @@ def threaded_client(conn, p , gameId):
                 connect_four.game.turn = 1
             
             
-            counters[gameId] += 1
         board_data = pickle.dumps(connect_four.game)
         conn.send(board_data)
+
+    try:
+        del games[gameId]
+        del ready[gameId]
+        print("Se ha cerrado el servidor")
+    except:
+        pass
+    conn.close()
                 
 
 while True:
@@ -87,11 +107,12 @@ while True:
     conexiones += 1
     p = 0
     gameId = (conexiones - 1)//2
+    
     if conexiones % 2 == 1:
         print("Creando nuevo juego....")
+        print("Esperando rival...")
     else: 
         p = 1
         
-    gameId = 0
     
     start_new_thread(threaded_client, (conn, p, gameId))
