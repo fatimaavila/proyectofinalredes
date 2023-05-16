@@ -4,7 +4,7 @@ class Network:
     def __init__(self) -> None:
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-        #Cambiar a tu propia IPv4
+        #Cambiar a mi propia IPv4
         self.server = "192.168.5.32"
         self.port = 5555
         self.addr = (self.server, self.port)
@@ -24,6 +24,10 @@ class Network:
          
         self.client.send(data.encode("ascii"))
         return self.client.recv(2048).decode("ascii")
+    
+n = Network()
+
+
     
 
 
