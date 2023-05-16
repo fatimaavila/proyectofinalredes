@@ -1,6 +1,7 @@
 import socket
 import _thread
 import sys
+import pickle
 
 #en el server se pone nuestro IPv4 (por lo menos por ahora que es local)
 server = "192.168.5.32"
@@ -14,6 +15,7 @@ try:
 except socket.error as e:
     print(str(e))
 
+conexiones = 0
 
 #cantidad de conexiones que vamos a tener
 server_socket.listen(2)
@@ -48,6 +50,6 @@ def client_checkup(conn):
 while True:
     conn, addr = server_socket.accept()
     print("conectado a: ", addr)
-
+    conexiones += 1
     client_checkup(conn)
 
