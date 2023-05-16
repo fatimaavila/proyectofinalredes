@@ -1,4 +1,5 @@
 import socket
+import pickle
 
 class Network:
     def __init__(self) -> None:
@@ -6,7 +7,7 @@ class Network:
 
         #Cambiar a mi propia IPv4
         self.server = "192.168.5.32"
-        self.port = 5555
+        self.port = 9090
         self.addr = (self.server, self.port)
         self.pos = self.connect()
 
@@ -20,12 +21,18 @@ class Network:
         return self.client.recv(2048).decode("ascii")
         
 
-    def send (self,data):
-         
+    def send(self,data):         
         self.client.send(data.encode("ascii"))
-        return self.client.recv(2048).decode("ascii")
+        
     
-n = Network()
+    def receive_board(self):
+        data = self.client.recv(2048*8) 
+       
+        board = pickle.loads(data) 
+       
+        return board
+       
+    
 
 
     

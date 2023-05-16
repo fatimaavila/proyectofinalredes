@@ -7,14 +7,28 @@ class game:
         self.rows = rows
         self.cols = cols
         self.board = np.full((rows, cols), ' ')
+        self.turn = 1
         
-        self.ended = False
+        self.winner = None
 
     def print_board(self):
         headers = [str(i) for i in range(1, self.cols+1)]
         max_col_widths = [max([wcwidth.wcwidth(cell) for cell in col]) for col in zip(*self.board)]
         formatted_board = [[cell.ljust(width) for cell, width in zip(row, max_col_widths)] for row in self.board]
         print(tabulate(formatted_board, headers=headers, tablefmt="fancy_grid"))
+
+    def get_player_move(self):
+        valid_move = False
+        
+        while not valid_move:
+            col = int(input(f"Jugador {self.turn}, elige donde colocar tu pieza! (1-{self.cols}) "))
+            if col < 1 or col > self.cols:
+                print(f"Columna invalida, elija entre (1-{self.cols})")
+            elif self.board[0][col-1] != ' ':
+                print("Esa columna ya está llena. 🧐")
+            else:
+                valid_move = True
+        return col-1
         
 
 
@@ -24,19 +38,9 @@ class ConnectFour:
         self.player = 1
         self.game = game()
         
-
-    def get_player_move(self):
-        valid_move = False
         
-        while not valid_move:
-            col = int(input(f"Jugador {self.player}, elige donde colocar tu pieza! (1-{self.game.cols}) "))
-            if col < 1 or col > self.game.cols:
-                print(f"Columna invalida, elija entre (1-{self.game.cols})")
-            elif self.game.board[0][col-1] != ' ':
-                print("Esa columna ya está llena. 🧐")
-            else:
-                valid_move = True
-        return col-1
+
+
 
     def check_win(self):
         # check para ganar horizontal
@@ -67,26 +71,7 @@ class ConnectFour:
                 return False
         return True
 
-    def jugar(self):
-        while True:
-            self.game.print_board()
-            col = self.get_player_move()
-            for row in range(self.game.rows-1, -1, -1):
-                if self.game.board[row][col] == ' ':
-                    self.game.board[row][col] = '🔴' if self.player == 1 else '🟡'
-                    break
-            if self.check_win():
-                self.game.print_board()
-                print(f"¡Jugador {self.player} gana! 🎉")
-                break
-            if self.board_full():
-                self.game.print_board()
-                print("Tie game!")
-                break
-            if self.player == 1:
-                self.player = 2
-            else:
-                self.player = 1
+
     
     def connected(self):
         return self.ready
@@ -94,4 +79,25 @@ class ConnectFour:
 
 if __name__ == "__main__":
     connect_four = ConnectFour()
-    connect_four.jugar()
+   
+    
+    while True:
+        connect_four.game.print_board()
+        col = connect_four.game.get_player_move()
+        for row in range(connect_four.game.rows-1, -1, -1):
+            if connect_four.game.board[row][col] == ' ':
+                connect_four.game.board[row][col] = '🔴' if connect_four.player == 1 else '🟡'
+                break
+        if connect_four.check_win():
+            connect_four.game.print_board()
+            print(f"¡Jugador {connect_four.player} gana! 🎉")
+            connect_four.game.winner = connect_four.player
+            break
+        if connect_four.board_full():
+            connect_four.game.print_board()
+            print("Tie game!")
+            break
+        if connect_four.player == 1:
+            connect_four.player = 2
+        else:
+            connect_four.player = 1
