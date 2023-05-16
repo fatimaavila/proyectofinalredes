@@ -76,28 +76,3 @@ class ConnectFour:
     def connected(self):
         return self.ready
 
-
-if __name__ == "__main__":
-    connect_four = ConnectFour()
-   
-    
-    while True:
-        connect_four.game.print_board()
-        col = connect_four.game.get_player_move()
-        for row in range(connect_four.game.rows-1, -1, -1):
-            if connect_four.game.board[row][col] == ' ':
-                connect_four.game.board[row][col] = '🔴' if connect_four.player == 1 else '🟡'
-                break
-        if connect_four.check_win():
-            connect_four.game.print_board()
-            print(f"¡Jugador {connect_four.player} gana! 🎉")
-            connect_four.game.winner = connect_four.player
-            break
-        if connect_four.board_full():
-            connect_four.game.print_board()
-            print("Tie game!")
-            break
-        if connect_four.player == 1:
-            connect_four.player = 2
-        else:
-            connect_four.player = 1

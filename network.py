@@ -14,20 +14,18 @@ class Network:
     def getPos(self):
         return self.pos
         
-
+    #SE CONECTA AL SERVER
     def connect(self):
-        
         self.client.connect(self.addr)
         return self.client.recv(2048).decode("ascii")
         
-
+    #ENVIA UN STR
     def send(self,data):         
         self.client.send(data.encode("ascii"))
         
-    
+    #RECIBE OBJETO BOARD COMO BINARIO Y LO CONVIERTE EN OBJETO
     def receive_board(self):
         data = self.client.recv(2048*8) 
-       
         board = pickle.loads(data) 
        
         return board

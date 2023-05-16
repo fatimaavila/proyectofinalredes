@@ -9,7 +9,7 @@ import time
 server = "192.168.5.32"
 port = 9090
 
-#TODO revisar que son estos sockets
+
 server_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 
 try:
@@ -17,6 +17,7 @@ try:
 except socket.error as e:
     print(str(e))
 
+#DICCIONARIOS QUE CONTIENEN LOS JUEGOS Y SUS VARIABLES PARA VER SI ESTÁN LISTOS
 conexiones = 0
 games = {}
 ready = {}
@@ -26,22 +27,23 @@ ready = {}
 server_socket.listen(100)
 print("Esperando conexiones, el servidor ha sido iniciado")
 
-
+#CREA UN THREAD PARA CADA CLIENTE
 def threaded_client(conn, p , gameId):
     global idCount
     conn.send(str(p).encode("ascii"))
+    #EL PRIMER JUGADOR EN CONECTARSE
     if p == 0:
         
         connect_four = ConnectFour()
         games[gameId] = connect_four
         ready[gameId] = False
-        
+    #EL SEGUNDO JUGADOR EN CONECTARSE 
     else:
         connect_four = games[gameId]
         connect_four.game.print_board()
         ready[gameId] = True
 
-
+    #EL PRIMER JUGADOR ESPERA A QUE SE CONECTE EL SEGUNDO
     while ready[gameId] == False:
         print("Esperando rival...")
         time.sleep(1.5)
@@ -57,11 +59,13 @@ def threaded_client(conn, p , gameId):
 
         connect_four = games[gameId]                 
         data = conn.recv(2048).decode("ascii")   
+        #CHEQUEA SI EL JUEGO SIGUE ACTIVO
         if gameId not in games:
             break
+        #MIENTRAS NO SEA N, SIGNIFICA QUE ES SU TURNO, MIENTRAS SEA N, QUE SIGA REENVIANDO EL TABLERO
         if data != "n":
           
-        
+            #SE METE LA JUGADA QUE SE ENVIÓN DE PARTE DEL CLIENTE
             col = int(data)
             for row in range(connect_four.game.rows-1, -1, -1):
                 if connect_four.game.board[row][col] == ' ':
@@ -74,9 +78,11 @@ def threaded_client(conn, p , gameId):
                 connect_four.game.print_board()
                 print(f"¡Jugador {connect_four.player} gana! 🎉")
                 connect_four.game.winner = connect_four.player
+                #SE ENVÍA EL GANADOR 
                 board_data = pickle.dumps(connect_four.game)
                 conn.send(board_data)
                 break
+
             if connect_four.board_full():
                 connect_four.game.print_board()
                 print("Tie game!")
@@ -91,7 +97,7 @@ def threaded_client(conn, p , gameId):
             
         board_data = pickle.dumps(connect_four.game)
         conn.send(board_data)
-
+    #SE ELMINIA LA PARTIDA
     try:
         del games[gameId]
         del ready[gameId]
@@ -102,6 +108,7 @@ def threaded_client(conn, p , gameId):
                 
 
 while True:
+    #SE ACEPTAN Y BUSCAN CONEXIONES
     conn, addr = server_socket.accept()
     print("conectado a: ", addr)
     conexiones += 1
@@ -114,5 +121,5 @@ while True:
     else: 
         p = 1
         
-    
+    #SE CREA UN HILO POR CADA CONEXIÓN
     start_new_thread(threaded_client, (conn, p, gameId))
