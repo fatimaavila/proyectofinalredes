@@ -46,7 +46,7 @@ def threaded_client(conn, p , gameId):
     #EL PRIMER JUGADOR ESPERA A QUE SE CONECTE EL SEGUNDO
     while ready[gameId] == False:
         print("Esperando rival...")
-        time.sleep(1.5)
+        time.sleep(3)
         
 
     reply = ""
@@ -71,6 +71,8 @@ def threaded_client(conn, p , gameId):
                 if connect_four.game.board[row][col] == ' ':
                     connect_four.game.board[row][col] = '🔴' if connect_four.player == 1 else '🟡'
                     break
+            
+            print("-----------------------JUEGO #" + str(gameId) + " -----------------------")
             connect_four.game.print_board()
             
 

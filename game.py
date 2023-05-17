@@ -38,9 +38,6 @@ class ConnectFour:
         self.player = 1
         self.game = game()
         
-        
-
-
 
     def check_win(self):
         # check para ganar horizontal
