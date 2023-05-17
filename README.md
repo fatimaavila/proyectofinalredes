@@ -17,7 +17,7 @@ Network 📶
     Network es una clase que utiliza el cliente para comunicarse con el servidor
 
 Server 🖥
-    Es el servidor desde donde se controlan todos los juegos, se aceptan todas las conexiónes y se envía información a los clientes
+    Es el servidor desde donde se controlan todos los juegos, se aceptan todas las conexiones y se envía información a los clientes
 
 Game 🕹
     Clase del objeto juego que es donde se encuentra la logica de conect4
