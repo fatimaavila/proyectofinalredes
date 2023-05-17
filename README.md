@@ -1,23 +1,26 @@
-# proyectofinalredes
-PRoyecto final redes - socket programming
-Juego de connect4 en línea (pero en red local)
 
-#REQUEISITOS
+# Proyecto final Introducción a redes - socket programming 🔌
 
- -numpy 
+El siguiente proyecto consiste de un juego de Connect 4 con dos jugadores, en linea, en la misma red local.
+
+# Requísitos para poder jugar
+
+ `-numpy
  -wcwidth
- -tabulate
+ -tabulate`
 
-Estos 3 requisitos pueden ser instalados con la ayuda de pip en la terminal escribiendo -pip install (nombre)
+Estos 3 requisitos pueden ser instalados con la ayuda de pip en la terminal escribiendo `-pip install *nombre*`
 
-Network
+## ¿Qué encontrarás?
+
+Network 📶
     Network es una clase que utiliza el cliente para comunicarse con el servidor
 
-Server
+Server 🖥
     Es el servidor desde donde se controlan todos los juegos, se aceptan todas las conexiónes y se envía información a los clientes
 
-game
+Game 🕹
     Clase del objeto juego que es donde se encuentra la logica de conect4
 
-cliente
+Client 📱
     El cliente envía sus jugadas al servidor y juega connect4
