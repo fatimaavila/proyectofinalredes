@@ -25,7 +25,7 @@ class game:
             if col < 1 or col > self.cols:
                 print(f"Columna invalida, elija entre (1-{self.cols})")
             elif self.board[0][col-1] != ' ':
-                print("Esa columna ya está llena. 🧐")
+                print("Esa columna ya está llena. 	•`_´•")
             else:
                 valid_move = True
         return col-1

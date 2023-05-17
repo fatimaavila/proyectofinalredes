@@ -69,7 +69,7 @@ def threaded_client(conn, p , gameId):
             col = int(data)
             for row in range(connect_four.game.rows-1, -1, -1):
                 if connect_four.game.board[row][col] == ' ':
-                    connect_four.game.board[row][col] = '🔴' if connect_four.player == 1 else '🟡'
+                    connect_four.game.board[row][col] = 'X' if connect_four.player == 1 else '0'
                     break
             
             print("-----------------------JUEGO #" + str(gameId) + " -----------------------")
@@ -78,7 +78,7 @@ def threaded_client(conn, p , gameId):
 
             if connect_four.check_win():
                 connect_four.game.print_board()
-                print(f"¡Jugador {connect_four.player} gana! 🎉")
+                print(f"¡Jugador {connect_four.player} gana! ※\(^o^)/※")
                 connect_four.game.winner = connect_four.player
                 #SE ENVÍA EL GANADOR 
                 board_data = pickle.dumps(connect_four.game)

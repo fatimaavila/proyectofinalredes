@@ -37,7 +37,7 @@ while True:
         
         for row in range(board.rows-1, -1, -1):
                 if board.board[row][move] == ' ':
-                    board.board[row][move] = '🔴' if board.turn == 1 else '🟡'
+                    board.board[row][move] = 'X' if board.turn == 1 else '0'
                     break
         
         send = str(move)
