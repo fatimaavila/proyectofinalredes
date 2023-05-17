@@ -20,7 +20,7 @@ Server 🖥
     Es el servidor desde donde se controlan todos los juegos, se aceptan todas las conexiones y se envía información a los clientes
 
 Game 🕹
-    Clase del objeto juego que es donde se encuentra la logica de conect4
+    Clase del objeto juego que es donde se encuentra la lógica de conect4
 
 Client 📱
     El cliente envía sus jugadas al servidor y juega connect4
