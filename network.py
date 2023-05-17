@@ -6,7 +6,7 @@ class Network:
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         #Cambiar a mi propia IPv4
-        self.server = "192.168.5.32"
+        self.server = "192.168.1.238"
         self.port = 9090
         self.addr = (self.server, self.port)
         self.pos = self.connect()

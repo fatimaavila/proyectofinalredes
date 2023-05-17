@@ -6,7 +6,7 @@ from game import ConnectFour
 import time
 
 #en el server se pone nuestro IPv4 (por lo menos por ahora que es local)
-server = "192.168.5.32"
+server = "192.168.1.238"
 port = 9090
 
 
